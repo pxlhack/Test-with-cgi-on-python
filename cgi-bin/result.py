@@ -3,6 +3,9 @@
 import cgi
 import os
 import http.cookies
+import datetime
+
+now = datetime.datetime.now().strftime('%Y-%m-%d__%H:%M:%S')
 
 form = cgi.FieldStorage()
 ans1 = form.getfirst("first")
@@ -24,8 +27,12 @@ if ans3 == 'right':
 cookie_value = ""
 cookie = http.cookies.SimpleCookie(os.environ.get("HTTP_COOKIE"))
 counter = cookie.get("COUNTER")
+cur_date = cookie.get("CUR_DATE")
 
-print("Set-cookie: COUNTER=" + str(right_counter))
+
+print("Set-cookie: COUNTER=" + str(right_counter) +";")
+print("Set-cookie: CUR_DATE=" + str(now) + ";")
+# print("Set-cookie: CUR_DATE=" + '"'+str(now) +'";')
 print("Content-type: text/html\n")
 
 print ("""
@@ -58,6 +65,7 @@ print ("""                 </span>
                         </span>
                     </div>
                     """)
+print(now)
 if not counter is None:
     print("""
                         <div class="your-result">
@@ -74,6 +82,7 @@ if not counter is None:
                         </span>
                     </div>
     """)
+print(cur_date.value)
 print("""
                 </div>
             </section>
